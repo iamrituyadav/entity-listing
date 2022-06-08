@@ -2,15 +2,17 @@ const express = require("express");
 const mongoose = require("mongoose");
 const connect = require("./src/db/db");
 const indexController = require("./src/controllers/index.controller");
+const userController = require("./src/controllers/user.controller");
 const app = express();
 app.use(express.json());
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  res.header("Access-Control-Allow-Origin", "*");
   next();
 });
 
 app.use("/products", indexController);
+app.use("/users", userController);
 
 app.listen(8080, async function () {
   try {
