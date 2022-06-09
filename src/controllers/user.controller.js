@@ -4,19 +4,48 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const users = await User.find().lean().exec();
-    return res.send(users);
+    const user = await User.find().lean().exec();
+    return res.send(user);
   } catch (e) {
-    console.log(e.message);
+    return res.send(e.message);
   }
 });
 
 router.post("/", async (req, res) => {
   try {
-    const users = await User.create(req.body);
-    return res.send(users);
+    const user = await User.create(req.body);
+    return res.send(user);
   } catch (e) {
-    console.log(e.message);
+    return res.send(e.message);
+  }
+});
+
+router.get("/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).lean().exec();
+    return res.send(user);
+  } catch (e) {
+    return res.send(e.message);
+  }
+});
+
+router.patch("/:id", async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    return res.send(user);
+  } catch (e) {
+    return res.send(e.message);
+  }
+});
+
+router.delete("/", async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    return res.send(user);
+  } catch (e) {
+    return res.send(e.message);
   }
 });
 

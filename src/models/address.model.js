@@ -1,9 +1,21 @@
 const mongoose = require("mongoose");
 
-const addSchema = new mongoose.Schema({
-  id: { type: Number, required: true },
-  address: { type: String, required: true },
-  user_id: { type: Schema.Types.ObjectId, required: true },
-});
+const addressSchema = new mongoose.Schema(
+  {
+    id: { type: Number, required: true },
+    address: { type: String, required: true },
+    town: { type: String, required: true },
+    pincode: { type: Number, required: true },
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
+  },
+  {
+    versionKey: false,
+    timestamps: true,
+  }
+);
 
-module.exports = mongoose.model("add", addSchema);
+module.exports = mongoose.model("address", addressSchema);

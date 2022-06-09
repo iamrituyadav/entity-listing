@@ -1,11 +1,11 @@
-const Address = require("../models/address.model");
+const Product = require("../models/products.model");
 const express = require("express");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const address = await Address.find().populate("user_id").lean().exec();
-    return res.send(address);
+    const product = await Product.find().populate("category_id").lean().exec();
+    return res.send(product);
   } catch (e) {
     return res.send(e.message);
   }
@@ -13,8 +13,8 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const address = await Address.create(req.body);
-    return res.send(address);
+    const product = await Product.create(req.body);
+    return res.send(product);
   } catch (e) {
     return res.send(e.message);
   }
@@ -22,8 +22,8 @@ router.post("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const address = await Address.findById(req.params.id).lean().exec();
-    return res.send(address);
+    const product = await Product.findById(req.params.id).lean().exec();
+    return res.send(product);
   } catch (e) {
     return res.send(e.message);
   }
@@ -31,10 +31,10 @@ router.get("/:id", async (req, res) => {
 
 router.patch("/:id", async (req, res) => {
   try {
-    const address = await Address.findByIdAndUpdate(req.params.id, req.body, {
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
-    return res.send(address);
+    return res.send(product);
   } catch (e) {
     return res.send(e.message);
   }
@@ -42,8 +42,8 @@ router.patch("/:id", async (req, res) => {
 
 router.delete("/", async (req, res) => {
   try {
-    const address = await Address.findByIdAndDelete(req.params.id);
-    return res.send(address);
+    const product = await Product.findByIdAndDelete(req.params.id);
+    return res.send(product);
   } catch (e) {
     return res.send(e.message);
   }
