@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/create", async (req, res) => {
   try {
     const brand = await Brand.create(req.body);
     return res.send(brand);
@@ -22,14 +22,17 @@ router.post("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const brand = await Brand.findById(req.params.id).lean().exec();
+    const brand = await Brand.findById(req.params.id)
+      .populate("product_id")
+      .lean()
+      .exec();
     return res.send(brand);
   } catch (e) {
     return res.send(e.message);
   }
 });
 
-router.patch("/:id", async (req, res) => {
+router.patch("/edit/:id", async (req, res) => {
   try {
     const brand = await Brand.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -40,7 +43,7 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-router.delete("/", async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const brand = await Brand.findByIdAndDelete(req.params.id);
     return res.send(brand);

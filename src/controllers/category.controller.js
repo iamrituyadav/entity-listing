@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/create", async (req, res) => {
   try {
     const category = await Category.create(req.body);
     return res.send(category);
@@ -29,7 +29,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.patch("/:id", async (req, res) => {
+router.patch("/edit/:id", async (req, res) => {
   try {
     const category = await Category.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -40,7 +40,7 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-router.delete("/", async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const category = await Category.findByIdAndDelete(req.params.id);
     return res.send(category);

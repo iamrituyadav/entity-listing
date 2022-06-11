@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/create", async (req, res) => {
   try {
     const order = await Order.create(req.body);
     return res.send(order);
@@ -26,14 +26,18 @@ router.post("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id).lean().exec();
+    const order = await Order.findById(req.params.id)
+      .populate("user_id")
+      .populate("product_id")
+      .lean()
+      .exec();
     return res.send(order);
   } catch (e) {
     return res.send(e.message);
   }
 });
 
-router.patch("/:id", async (req, res) => {
+router.patch("/edit/:id", async (req, res) => {
   try {
     const order = await Order.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -44,7 +48,7 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-router.delete("/", async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const order = await Order.findByIdAndDelete(req.params.id);
     return res.send(order);

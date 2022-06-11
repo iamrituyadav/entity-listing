@@ -1,5 +1,6 @@
 const Product = require("../models/products.model");
 const express = require("express");
+const ReviewsModel = require("../models/reviews.model");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -11,7 +12,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/create", async (req, res) => {
   try {
     const product = await Product.create(req.body);
     return res.send(product);
@@ -22,14 +23,20 @@ router.post("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id).lean().exec();
+    const product = await Product.findById(req.params.id)
+      .populate("category_id")
+      .lean()
+      .exec();
+    const reviews = await ReviewsModel.aggregate().match({
+      product_id: req.params.id,
+    });
     return res.send(product);
   } catch (e) {
     return res.send(e.message);
   }
 });
 
-router.patch("/:id", async (req, res) => {
+router.patch("/edit/:id", async (req, res) => {
   try {
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -40,7 +47,7 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-router.delete("/", async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
     return res.send(product);

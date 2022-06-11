@@ -4,14 +4,18 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const review = await Review.find().populate("product_id").lean().exec();
+    const review = await Review.find()
+      .populate("product_id")
+      .populate("user_id")
+      .lean()
+      .exec();
     return res.send(review);
   } catch (e) {
     return res.send(e.message);
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/create", async (req, res) => {
   try {
     const review = await Review.create(req.body);
     return res.send(review);
@@ -22,14 +26,18 @@ router.post("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const review = await Review.findById(req.params.id).lean().exec();
+    const review = await Review.findById(req.params.id)
+      .populate("product_id")
+      .populate("user_id")
+      .lean()
+      .exec();
     return res.send(review);
   } catch (e) {
     return res.send(e.message);
   }
 });
 
-router.patch("/:id", async (req, res) => {
+router.patch("/edit/:id", async (req, res) => {
   try {
     const review = await Review.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -40,7 +48,7 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-router.delete("/", async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const review = await Review.findByIdAndDelete(req.params.id);
     return res.send(review);

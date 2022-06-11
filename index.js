@@ -18,13 +18,13 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/products", indexController);
+// app.use("/products", indexController);
 app.use("/users", userController);
 app.use("/address", addressController);
 app.use("/category", categoryController);
 app.use("/brands", brandController);
-app.use("/review", reviewController);
-app.use("/order", orderController);
+app.use("/reviews", reviewController);
+app.use("/orders", orderController);
 app.use("/products", productController);
 
 app.listen(8080, async function () {
